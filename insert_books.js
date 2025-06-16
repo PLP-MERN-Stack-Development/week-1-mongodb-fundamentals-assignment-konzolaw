@@ -1,16 +1,15 @@
-// insert_books.js - Script to populate MongoDB with sample book data
 
 // Import MongoDB client
 const { MongoClient } = require('mongodb');
 
-// Connection URI (replace with your MongoDB connection string if using Atlas)
+
 const uri = 'mongodb://localhost:27017';
 
-// Database and collection names
+
 const dbName = 'plp_bookstore';
 const collectionName = 'books';
 
-// Sample book data
+
 const books = [
   {
     title: 'To Kill a Mockingbird',
@@ -131,19 +130,129 @@ const books = [
     in_stock: true,
     pages: 342,
     publisher: 'Thomas Cautley Newby'
+  },
+    {
+    title: "Beneath Nairobi Skies",
+    author: "Wanjiru Mwangi",
+    genre: "Drama",
+    published_year: 2021,
+    price: 13.99,
+    in_stock: true,
+    pages: 290,
+    publisher: "Nairobi Press"
+  },
+  {
+    title: "Habits of a Kenyan Achiever",
+    author: "Otieno Okoth",
+    genre: "Self-help",
+    published_year: 2020,
+    price: 14.50,
+    in_stock: true,
+    pages: 240,
+    publisher: "Upeo Publishers"
+  },
+  {
+    title: "Freedom Fighters",
+    author: "Muthoni Wacera",
+    genre: "History",
+    published_year: 2005,
+    price: 10.00,
+    in_stock: false,
+    pages: 320,
+    publisher: "Safari Books"
+  },
+  {
+    title: "Lessons from the Village",
+    author: "Kiprono Chebet",
+    genre: "Memoir",
+    published_year: 2018,
+    price: 12.00,
+    in_stock: true,
+    pages: 260,
+    publisher: "Rift Valley Publishers"
+  },
+  {
+    title: "The River Between",
+    author: "Ngũgĩ wa Thiong'o",
+    genre: "Fiction",
+    published_year: 1965,
+    price: 9.99,
+    in_stock: true,
+    pages: 212,
+    publisher: "East African Publishing"
+  },
+  {
+    title: "Becoming Kenyan",
+    author: "Achieng Atieno",
+    genre: "Biography",
+    published_year: 2019,
+    price: 15.99,
+    in_stock: false,
+    pages: 360,
+    publisher: "Nia House"
+  },
+  {
+    title: "Think Like a Nairobian",
+    author: "Brian Oloo",
+    genre: "Self-help",
+    published_year: 2017,
+    price: 11.50,
+    in_stock: true,
+    pages: 190,
+    publisher: "Capital Books"
+  },
+  {
+    title: "Jua Kali Chronicles",
+    author: "Kamau Maina",
+    genre: "Fiction",
+    published_year: 2010,
+    price: 7.99,
+    in_stock: true,
+    pages: 200,
+    publisher: "Mashambani Press"
+  },
+  {
+    title: "Maisha Mtaani",
+    author: "Fatuma Yusuf",
+    genre: "Classic",
+    published_year: 2008,
+    price: 8.45,
+    in_stock: false,
+    pages: 185,
+    publisher: "Pamoja Publishers"
+  },
+  {
+    title: "Nyayo Era",
+    author: "Mutiso Muli",
+    genre: "Politics",
+    published_year: 1995,
+    price: 11.00,
+    in_stock: true,
+    pages: 410,
+    publisher: "Uhuru Books"
+  },
+  {
+    title: "Hug the Porcupine",
+    author: "Victor Kibisu",
+    genre: "Fiction",
+    published_year: 2010,
+    price: 12.45,
+    in_stock: true,
+    pages: 90,
+    publisher: "Moran Publishers"
   }
 ];
 
-// Function to insert books into MongoDB
+//insert books into MongoDB
 async function insertBooks() {
   const client = new MongoClient(uri);
 
   try {
-    // Connect to the MongoDB server
+    
     await client.connect();
     console.log('Connected to MongoDB server');
 
-    // Get database and collection
+    
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
@@ -175,24 +284,20 @@ async function insertBooks() {
   }
 }
 
-// Run the function
 insertBooks().catch(console.error);
 
-/*
- * Example MongoDB queries you can try after running this script:
- *
- * 1. Find all books:
- *    db.books.find()
- *
- * 2. Find books by a specific author:
- *    db.books.find({ author: "George Orwell" })
- *
- * 3. Find books published after 1950:
- *    db.books.find({ published_year: { $gt: 1950 } })
- *
- * 4. Find books in a specific genre:
- *    db.books.find({ genre: "Fiction" })
- *
- * 5. Find in-stock books:
- *    db.books.find({ in_stock: true })
- */ 
+//  1. Find all books:
+    db.books.find()
+ 
+//  2. Find books by a specific author:
+   db.books.find({ author: "George Orwell" })
+
+//  3. Find books published after 1950:
+   db.books.find({ published_year: { $gt: 1950 } })
+ 
+  // 4. Find books in a specific genre:
+    db.books.find({ genre: "Fiction" })
+ 
+  // 5. Find in-stock books:
+   db.books.find({ in_stock: true })
+ 
