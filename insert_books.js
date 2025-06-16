@@ -1,15 +1,15 @@
+// insert_books.js - Script to populate MongoDB with sample book data
 
-// Import MongoDB client
 const { MongoClient } = require('mongodb');
 
-
+// Connection URI
 const uri = 'mongodb://localhost:27017';
 
-
+// Database and collection names
 const dbName = 'plp_bookstore';
 const collectionName = 'books';
 
-
+// Sample book data
 const books = [
   {
     title: 'To Kill a Mockingbird',
@@ -243,61 +243,57 @@ const books = [
   }
 ];
 
-//insert books into MongoDB
+// Function to insert books into MongoDB
 async function insertBooks() {
   const client = new MongoClient(uri);
 
   try {
-    
     await client.connect();
     console.log('Connected to MongoDB server');
 
-    
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
-    // Check if collection already has documents
-    const count = await collection.countDocuments();
-    if (count > 0) {
-      console.log(`Collection already contains ${count} documents. Dropping collection...`);
+    // Drop collection if it exists
+    const collections = await db.listCollections({ name: collectionName }).toArray();
+    if (collections.length > 0) {
       await collection.drop();
-      console.log('Collection dropped successfully');
+      console.log('Existing collection dropped');
     }
 
-    // Insert the books
+    // Insert books
     const result = await collection.insertMany(books);
     console.log(`${result.insertedCount} books were successfully inserted into the database`);
 
     // Display the inserted books
-    console.log('\nInserted books:');
     const insertedBooks = await collection.find({}).toArray();
     insertedBooks.forEach((book, index) => {
       console.log(`${index + 1}. "${book.title}" by ${book.author} (${book.published_year})`);
     });
 
+    // --- Example queries in Node.js ---
+    console.log('\nAll books:');
+    console.log(await collection.find({}).toArray());
+
+    console.log('\nBooks by George Orwell:');
+    console.log(await collection.find({ author: "George Orwell" }).toArray());
+
+    console.log('\nBooks published after 1950:');
+    console.log(await collection.find({ published_year: { $gt: 1950 } }).toArray());
+
+    console.log('\nBooks in Fiction genre:');
+    console.log(await collection.find({ genre: "Fiction" }).toArray());
+
+    console.log('\nBooks in stock:');
+    console.log(await collection.find({ in_stock: true }).toArray());
+
   } catch (err) {
     console.error('Error occurred:', err);
   } finally {
-    // Close the connection
     await client.close();
     console.log('Connection closed');
   }
 }
 
+// Run the function
 insertBooks().catch(console.error);
-
-//  1. Find all books:
-    db.books.find()
- 
-//  2. Find books by a specific author:
-   db.books.find({ author: "George Orwell" })
-
-//  3. Find books published after 1950:
-   db.books.find({ published_year: { $gt: 1950 } })
- 
-  // 4. Find books in a specific genre:
-    db.books.find({ genre: "Fiction" })
- 
-  // 5. Find in-stock books:
-   db.books.find({ in_stock: true })
- 
